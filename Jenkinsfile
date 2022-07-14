@@ -1,41 +1,16 @@
-
-
-//scripted pipeline
-//node {
-//	stage('Build') {
-//		echo "Build"
-//	}
-//	stage('Test') {
-//		echo "Test"
-//	}
-//	stage('Integration Test') {
-//		echo "Integration Test"
-//	}
-//}
-
-//node {
-//	echo "Build"
-//	echo "Test"
-//	echo "Integration Test"
-//}
-
-//declarative
 pipeline {
-	//agent any
-	//agent { docker { image 'maven:3.6.3'}}
-	//agent { docker { image 'node:14.5.0'}}
 
-	agent { docker { image 'maven:3.6.3'}}
+  environment {
+    dockerimagename = "900832/nodeapp"
+    dockerImage = ""
+  }
 
-	environment {
-		dockerHome = tool "myDocker"
-		mavenHome = tool "myMaven"
-		PATH = "$dockerHome/bin:$mavenHome/bin:$PATH"
-	}
+  agent any
 
 	stages {
 		stage("Checkout") {
 			steps {
+			    git branch: 'master', url: 'https://github.com/asnaga/devops-jenkins-currency-exchange-microservice.git'
 				sh 'mvn --version'
 				sh 'docker --version'
 				//sh 'node --version'
@@ -53,11 +28,11 @@ pipeline {
 				sh "mvn clean compile"
 			}
 		}
-		//stage("Test") {
-		//	steps {
-		//		sh "mvn test"
-		//	}
-		//}
+		stage("Test") {
+			steps {
+				sh "mvn test"
+			}
+		}
 		//stage("Integration Test") {
 		//	steps {
 		//		sh "mvn failsafe:integration-test failsafe:verify"
@@ -69,42 +44,53 @@ pipeline {
 				sh "mvn package -DskipTests"
 			}
 		}
+		
 
 		stage("Build") {
 			steps {
-				//docker build -t andrepereira/currency-exchange:$env.BUILD_TAG
 				script {
-					dockerImage = docker.build("andrepereira/big-response:0.0.1")
+					dockerImage = docker.build dockerimagename
+					echo "Build Success"
 				}
 			}
 		}
 
 		stage("Push docker image") {
+			environment {
+               registryCredential = 'dockerhublogin'
+               }
 			steps {
 				script {
-					docker.withRegistry("", "dockerHub") {
-						dockerImage.push()
+					docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
+						//dockerImage.push()
 						dockerImage.push('latest')
 					}
 					
 				}
 			}
 		}
-
-		
+        
+		stage('Deploying App to Kubernetes') { 
+		    steps { 
+			   script { 
+			     kubernetesDeploy(configs: "deploymentservice.yml", kubeconfigId: "kubernetes")
+	            }
+            }
+        }			
 	} 
 	
 	post {
 		always {
 			echo "This command runs always"
+			 //mail bcc: '', body: 'TEST Sending SUCCESS email from jenkins', cc: '', from: '', replyTo: '', subject: 'SUCCESS BUILDING PROJECT $env.JOB_NAME', to: 'rohith.b@arisglobal.com'
 		}
 		success {
 			echo "this command executes only when all stages succeed"
-			//mail bcc: '', body: 'TEST Sending SUCCESS email from jenkins', cc: '', from: '', replyTo: '', subject: 'SUCCESS BUILDING PROJECT X', to: 'andre.consultant@gmail.com'
+			  //mail bcc: '', body: 'TEST Sending SUCCESS email from jenkins', cc: '', from: '', replyTo: '', subject: 'SUCCESS BUILDING PROJECT $env.JOB_NAME', to: 'rohith.b@arisglobal.com'
 		}
 		failure {
 			echo "this command executes when one of the stages failed"
-			//mail bcc: '', body: 'TEST Sending FAILURE email from jenkins', cc: '', from: '', replyTo: '', subject: 'ERROR BUILDING PROJECT X', to: 'andre.consultant@gmail.com'
+			 //mail bcc: '', body: 'TEST Sending FAILURE email from jenkins', cc: '', from: '', replyTo: '', subject: 'ERROR BUILDING PROJECT $env.JOB_NAME', to: 'rohith.b@arisglobal.com'
 		}
 	}
 }
