@@ -69,8 +69,7 @@ pipeline {
 	            }
             }
         }			
-	} 
-	
+   } 	
 	post {
 		always {
 			echo "This command runs always"
