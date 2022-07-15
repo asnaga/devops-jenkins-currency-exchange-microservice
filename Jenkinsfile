@@ -23,30 +23,22 @@ pipeline {
 				echo "BUILD URL - $env.BUILD_URL"
 			}
 		}
-		stage("Compile") {
-			steps {
-				sh "mvn clean compile"
-			}
-		}
-		stage("Test") {
+		//stage("Compile") {
+			//steps {
+				//sh "mvn clean compile"
+			//}
+		//}
+		stage("Unit_Test") {
 			steps {
 				sh "mvn test"
 			}
 		}
-		//stage("Integration Test") {
-		//	steps {
-		//		sh "mvn failsafe:integration-test failsafe:verify"
-		//	}
-		//}
-
-		stage("package") {
+		stage("Build") {
 			steps {
 				sh "mvn package -DskipTests"
 			}
 		}
-		
-
-		stage("Build") {
+		stage("Docker_Image_Build") {
 			steps {
 				script {
 					dockerImage = docker.build dockerimagename
@@ -55,7 +47,7 @@ pipeline {
 			}
 		}
 
-		stage("Push docker image") {
+		stage("Docker_Image_Push") {
 			environment {
                registryCredential = 'dockerhublogin'
                }
@@ -70,7 +62,7 @@ pipeline {
 			}
 		}
         
-		stage('Deploying App to Kubernetes') { 
+		stage('Deploying_to_EKS') { 
 		    steps { 
 			   script { 
 			     kubernetesDeploy(configs: "deploymentservice.yml", kubeconfigId: "kubernetes")
