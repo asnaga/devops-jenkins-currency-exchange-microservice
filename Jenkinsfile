@@ -4,6 +4,7 @@ pipeline {
     dockerimagename = "900832/nodeapp"
     dockerImage = ""
     Dev_Emailid = ""
+    DevOps = "saurav.kumar@arisglobal.com, rohith.b@arisglobal.com"
   }
 
   agent any
@@ -41,7 +42,7 @@ pipeline {
         post {
           failure {
             sh 'return'
-            //emailtext attachlog: true, body: 'Unit Test case has failed', subject: 'FAILED', to "${Dev_Emailid}"
+            emailext attachLog: true, body: "${JOB_NAME} - Unit Test case Failed - ${BUILD_NUMBER}", subject: 'Pipeline Failed', to: "${DevOps}"
           }
         }
       }
@@ -53,7 +54,7 @@ pipeline {
         post {
           failure {
             sh 'return'
-            //emailtext attachlog: true, body: 'Unit Test case has failed', subject: 'FAILED', to "${Dev_Emailid}"
+            emailext attachLog: true, body: "${JOB_NAME} - Build Failed - ${BUILD_NUMBER}", subject: 'Pipeline Failed', to: "${DevOps}"
           }
         }
       }
@@ -68,7 +69,7 @@ pipeline {
         post {
           failure {
             sh 'return'
-            //emailtext attachlog: true, body: 'Unit Test case has failed', subject: 'FAILED', to "${Dev_Emailid}"
+            emailext attachLog: true, body: "${JOB_NAME} - Docker build - ${BUILD_NUMBER}", subject: 'Pipeline Failed', to: "${DevOps}"
           }
         }
       }
@@ -87,7 +88,7 @@ pipeline {
         post {
           failure {
             sh 'return'
-            //emailtext attachlog: true, body: 'Unit Test case has failed', subject: 'FAILED', to "${Dev_Emailid}"
+            emailext attachLog: true, body: "${JOB_NAME} - Docker Push Failed - ${BUILD_NUMBER}", subject: 'Pipeline Failed', to: "${DevOps}"
           }
         }
         }
@@ -102,7 +103,7 @@ pipeline {
       post {
         failure {
           sh 'return'
-          //emailtext attachlog: true, body: 'Unit Test case has failed', subject: 'FAILED', to "${Dev_Emailid}"
+          emailext attachLog: true, body: "${JOB_NAME} - Deployment Failed - ${BUILD_NUMBER}", subject: 'Pipeline Failed', to: "${DevOps}"
         }
       }
     }
@@ -111,15 +112,17 @@ pipeline {
   post {
        always {
          echo "This command runs always"
-         //mail bcc: '', body: 'TEST Sending SUCCESS email from jenkins', cc: 'saurav.kumar@arisglobal.com', from: 'rohith.b@arisglobal.com', replyTo: '', subject: 'SUCCESS BUILDING PROJECT $env.JOB_NAME', to: 'rohith.b@arisglobal.com'
+         //mail bcc: '', body: 'TEST Sending SUCCESS email from jenkins', cc: '', from: '', replyTo: '', subject: 'SUCCESS BUILDING PROJECT $env.JOB_NAME', to: 'rohith.b@arisglobal.com'
+         emailext attachLog: true, body: "${JOB_NAME} - Pipeline Execution - ${BUILD_NUMBER}", subject: 'Pipeline Execution Done', to: "${DevOps}"
+         //emailext attachLog: true, body: 'Unit Test case has failed', subject: 'FAILED', to "${DevOps}"
        }
        success {
          echo "this command executes only when all stages succeed"
-         mail bcc: '', body: 'TEST Sending SUCCESS email from jenkins', cc: 'saurav.kumar@arisglobal.com', from: 'rohith.b@arisglobal.com', replyTo: '', subject: "jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}", to: 'rohith.b@arisglobal.com'
+         //mail bcc: '', body: 'TEST Sending SUCCESS email from jenkins', cc: '', from: '', replyTo: '', subject: 'SUCCESS BUILDING PROJECT $env.JOB_NAME', to: 'rohith.b@arisglobal.com'
        }
        failure {
          echo "this command executes when one of the stages failed"
-         mail bcc: '', body: 'TEST Sending FAILURE email from jenkins', cc: 'saurav.kumar@arisglobal.com', from: 'rohith.b@arisglobal.com', replyTo: '', subject: "jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}", to: 'rohith.b@arisglobal.com'
+         //mail bcc: '', body: 'TEST Sending FAILURE email from jenkins', cc: '', from: '', replyTo: '', subject: 'ERROR BUILDING PROJECT $env.JOB_NAME', to: 'rohith.b@arisglobal.com'
        }
      }
 }
