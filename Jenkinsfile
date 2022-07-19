@@ -111,15 +111,15 @@ pipeline {
   post {
        always {
          echo "This command runs always"
-         mail bcc: '', body: 'TEST Sending SUCCESS email from jenkins', cc: '', from: 'rohith.b@arisglobal.com', replyTo: '', subject: 'SUCCESS BUILDING PROJECT $env.JOB_NAME', to: 'rohith.b@arisglobal.com'
+         mail bcc: '', body: 'TEST Sending SUCCESS email from jenkins', cc: 'saurav.kumar@arisglobal.com', from: 'rohith.b@arisglobal.com', replyTo: '', subject: 'SUCCESS BUILDING PROJECT $env.JOB_NAME', to: 'rohith.b@arisglobal.com'
        }
        success {
          echo "this command executes only when all stages succeed"
-         mail bcc: '', body: 'TEST Sending SUCCESS email from jenkins', cc: '', from: 'rohith.b@arisglobal.com', replyTo: '', subject: 'SUCCESS BUILDING PROJECT $env.JOB_NAME', to: 'rohith.b@arisglobal.com'
+         mail bcc: '', body: 'TEST Sending SUCCESS email from jenkins', cc: 'saurav.kumar@arisglobal.com', from: 'rohith.b@arisglobal.com', replyTo: '', subject: 'SUCCESS BUILDING PROJECT $env.JOB_NAME', to: 'rohith.b@arisglobal.com'
        }
        failure {
          echo "this command executes when one of the stages failed"
-         mail bcc: '', body: 'TEST Sending FAILURE email from jenkins', cc: '', from: 'rohith.b@arisglobal.com', replyTo: '', subject: 'ERROR BUILDING PROJECT $env.JOB_NAME', to: 'rohith.b@arisglobal.com'
+         mail bcc: '', body: 'TEST Sending FAILURE email from jenkins', cc: 'saurav.kumar@arisglobal.com', from: 'rohith.b@arisglobal.com', replyTo: '', subject: 'ERROR BUILDING PROJECT $env.JOB_NAME', to: 'rohith.b@arisglobal.com'
        }
      }
 }
