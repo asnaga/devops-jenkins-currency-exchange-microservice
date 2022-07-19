@@ -1,7 +1,7 @@
 pipeline {
 
   environment {
-    dockerimagename = "900832/nodeapp"
+    dockerimagename = "/nodeapp"
     dockerImage = ""
     Dev_Emailid = ""
   }
@@ -119,7 +119,7 @@ pipeline {
        }
        failure {
          echo "this command executes when one of the stages failed"
-         mail bcc: '', body: 'TEST Sending FAILURE email from jenkins', cc: 'saurav.kumar@arisglobal.com', from: 'rohith.b@arisglobal.com', replyTo: '', subject: 'ERROR BUILDING PROJECT $env.JOB_NAME', to: 'rohith.b@arisglobal.com'
+         mail bcc: '', body: 'TEST Sending FAILURE email from jenkins', cc: 'saurav.kumar@arisglobal.com', from: 'rohith.b@arisglobal.com', replyTo: '', subject: "jenkins build:${currentBuild.currentResult}: ${env.JOB_NAME}", to: 'rohith.b@arisglobal.com'
        }
      }
 }
