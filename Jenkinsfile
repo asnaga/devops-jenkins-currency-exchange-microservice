@@ -88,7 +88,6 @@ pipeline {
                 sh 'docker push 700080035327.dkr.ecr.us-east-1.amazonaws.com/lscp-mscex-poc-01:${BUILD_NUMBER}'
               }
           }
-        }
         post {
           failure {
             sh 'return'
@@ -129,3 +128,4 @@ pipeline {
          //mail bcc: '', body: 'TEST Sending FAILURE email from jenkins', cc: '', from: '', replyTo: '', subject: 'ERROR BUILDING PROJECT $env.JOB_NAME', to: 'rohith.b@arisglobal.com'
        }
      }
+}
