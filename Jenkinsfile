@@ -2,6 +2,8 @@ pipeline {
 
   environment {
     dockerimagename = "700080035327.dkr.ecr.us-east-1.amazonaws.com/lscp-mscex-poc-01:${BUILD_NUMBER}"
+    AWS_ACCESS_KEY_ID     = credentials('accesskey')
+    AWS_SECRET_ACCESS_KEY = credentials('secret_access_key')    
     dockerImage = ""
     Dev_Emailid = ""
     DevOps = "saurav.kumar@arisglobal.com, rohith.b@arisglobal.com"
