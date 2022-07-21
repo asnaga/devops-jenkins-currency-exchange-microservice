@@ -1,7 +1,7 @@
 pipeline {
 
   environment {
-    dockerimagename = "900832/nodeapp"
+    dockerimagename = "700080035327.dkr.ecr.us-east-1.amazonaws.com/lscp-mscex-poc-01:${BUILD_NUMBER}"
     dockerImage = ""
     Dev_Emailid = ""
     DevOps = "saurav.kumar@arisglobal.com, rohith.b@arisglobal.com"
@@ -79,10 +79,14 @@ pipeline {
           registryCredential = 'dockerhublogin'
         }
         steps {
-          script {
-            docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
-              dockerImage.push('latest')
-            }
+          //script {
+            //docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
+              //dockerImage.push('latest')
+            //}
+            script {
+                sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 700080035327.dkr.ecr.us-east-1.amazonaws.com'
+                sh 'docker push 700080035327.dkr.ecr.us-east-1.amazonaws.com/lscp-mscex-poc-01:${BUILD_NUMBER}'
+              }
           }
         }
         post {
