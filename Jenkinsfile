@@ -99,9 +99,7 @@ pipeline {
         }
     stage('update_yml')
           steps{
-            script{
               sh '''sed 's/$version/${BUILD_NUMBER}/g' deploymentservice.yml'''
-            }
           }
 
     stage('Deploying_to_EKS') {
