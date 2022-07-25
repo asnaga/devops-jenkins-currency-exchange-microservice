@@ -99,10 +99,10 @@ pipeline {
         }
         stage('Update_yml_file'){
             steps{
-                sh '''
-                  sudo chmod 777 deploymetservice.yml
-                  sed 's/$version/79/g' deploymentservice.yml
-                  '''
+              script {
+                sh chmod 777 deploymetservice.yml
+                sh sed 's/$version/79/g' deploymentservice.yml
+               }
             }
         }
 
