@@ -97,14 +97,6 @@ pipeline {
           }
         }
         }
-        stage('Update_yml_file'){
-            steps{
-              script {
-                sh chmod 777 deploymetservice.yml
-                sh sed 's/$version/79/g' deploymentservice.yml
-               }
-            }
-        }
 
     stage('Deploying_to_EKS') {
         steps {
