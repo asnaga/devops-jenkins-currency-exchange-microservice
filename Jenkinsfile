@@ -6,7 +6,7 @@ pipeline {
     AWS_SECRET_ACCESS_KEY = credentials('secret_access_key')    
     dockerImage = ""
     Dev_Emailid = ""
-    DevOps = "saurav.kumar@arisglobal.com, rohith.b@arisglobal.com"
+    //DevOps = "saurav.kumar@arisglobal.com, rohith.b@arisglobal.com"
   }
 
   agent any
