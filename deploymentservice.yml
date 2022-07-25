@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: nodeserver
-        image: 700080035327.dkr.ecr.us-east-1.amazonaws.com/lscp-mscex-poc-01:latest
+        image: lscp-mscex-poc-01:latest
         ports:
         - containerPort: 8000
 
