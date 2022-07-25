@@ -100,7 +100,7 @@ pipeline {
     stage('update_yml)
           steps{
             script{
-              sh "sed 's/$version/${BUILD_NUMBER}/g' deploymentservice.yml"
+              sh '''sed 's/$version/${BUILD_NUMBER}/g' deploymentservice.yml'''
             }
           }
 
