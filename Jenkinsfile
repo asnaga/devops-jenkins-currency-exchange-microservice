@@ -102,7 +102,7 @@ pipeline {
     stage('Deploying_to_EKS') {
         steps {
           script {
-            sh "sed 's/$version/${BUILD_NUMBER}/g' deploymentservice.yml"
+            sh "sed 's/$version/${BUILD_NUMBER}/g' /var/lib/jenkins/workspace/LSCEX-Mircroservice/deploymentservice.yml"
             sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 700080035327.dkr.ecr.us-east-1.amazonaws.com'
             kubernetesDeploy(configs: "deploymentservice.yml", kubeconfigId: "kubernetes")
           }
