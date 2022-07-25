@@ -97,10 +97,11 @@ pipeline {
           }
         }
         }
-    stage('update_yml')
-          steps{
-              sh '''sed 's/$version/${BUILD_NUMBER}/g' deploymentservice.yml'''
-          }
+        stage('Update_yml_file'){
+            steps{
+                sh "sed 's/$version/79/g' deploymentservice.yml"
+            }
+        }
 
     stage('Deploying_to_EKS') {
         steps {
